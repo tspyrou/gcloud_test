@@ -1,0 +1,4 @@
+tom@openroad-PowerEdge-R300:~$ gcloud beta compute ssh --zone "us-west2-a" "openroad-public-jenkins-agent" --project "foss-fpga-tools-ext-openroad" -- "uname -a"
+Linux openroad-public-jenkins-agent 3.10.0-1062.18.1.el7.x86_64 #1 SMP Tue Mar 17 23:49:17 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux
+Connection to 34.94.93.234 closed.
+
