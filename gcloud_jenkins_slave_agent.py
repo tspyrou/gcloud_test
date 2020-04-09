@@ -53,27 +53,24 @@ def run_command_remotely(user, host, keyfile, command):
         return error
     return result
 
-instances=get_instance_names()
-print("running instances=",instances," size=",len(instances))
-agents = get_jenkins_agent_instance_names()
-print("agents=",agents)
 unique_name = create_unique_instance_name()
-print(unique_name)
-#gcloud compute --project "foss-fpga-tools-ext-openroad" disks create "instance-1" --size "128" --zone "us-west2-a" --source-snapshot "firstjenkinsagentworks" --type "pd-ssd"
+print("creating new instance ",unique_name)
 
-#gcloud beta compute --project=foss-fpga-tools-ext-openroad instances create instance-1 --zone=us-west2-a --machine-type=c2-standard-16 --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=281156998478-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --disk=name=instance-1,device-name=instance-1,mode=rw,boot=yes,auto-delete=yes --reservation-affinity=any
-
-
-#result = run_command_remotely_ssh("tspyrou", ip_add, "~/.ssh/gcloud", "uname -a")
-#print "remote result=", result
-#run_command_print_stdout(["gcloud", "compute", "instances", "stop", "--zone", zone, inst])
-#print run_command_print_stdout(["gcloud", "compute", "instances", "list"])
-
-# should have done this with google cloud run - for ephemeral things.
-# Google cloud build, docker images etc, has docker container registry, private containers too
-# Make machines ephemeral. For example run jenkins server at UCSD but executors in the cloud.
-# Make deleting and stopping machines the same. Only stop is you want to keep data on the machine.
+# create disk
+#gcloud compute --project "foss-fpga-tools-ext-openroad" disks create "unique_name" --size "256" --zone "us-central1-c" --source-snapshot "firstjenkinsagentworks-docker-clean-cronv2" --type "pd-ssd"
+print(["gcloud", "compute", "--project", "foss-fpga-tools-ext-openroad", "disks", "create", unique_name, "--size", "256", "--zone", "us-central1-c", "--source-snapshot", "firstjenkinsagentworks-docker-clean-cronv2", "--type", "pd-ssd"])
 
 
 
+#create instance
+#gcloud beta compute --project=foss-fpga-tools-ext-openroad instances create unique_name --zone=us-central1-c --machine-type=c2-standard-16 --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=281156998478-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --disk=name=unique_name,device-name=unique_name,mode=rw,boot=yes,auto-delete=yes --reservation-affinity=any
+print(["gcloud beta compute", "--project=foss-fpga-tools-ext-openroad", "instances", "create", unique_name, "--zone=us-central1-c", "--machine-type=c2-standard-16", "--subnet=default", "--network-tier=PREMIUM", "--maintenance-policy=MIGRATE", "--service-account=281156998478-compute@developer.gserviceaccount.com", "--scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append", "--disk=name=", unique_name, "device-name=unique_name,mode=rw,boot=yes,auto-delete=yes", "--reservation-affinity=any"])
+
+
+#send command
+#gcloud compute ssh unique_name -- uname -a
+print(["gcloud", "compute", "ssh", unique_name, "--", "uname", "-a"])
+#delete instance
+#gcloud compute instances delete unique_name --delete-disks=all --quiet
+print(["gcloud", "compute", "instance", "delete",  unique_name, "--delete-disks=all", "--quiet"])
 
