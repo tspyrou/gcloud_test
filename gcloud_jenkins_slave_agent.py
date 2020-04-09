@@ -17,8 +17,11 @@ def get_instance_names():
     instance_list.sort()
     return instance_list
 
+def get_jenkins_agent_prefix():
+    return "openroad-public-jenkins-agent"
+
 def get_jenkins_agent_instance_names():
-    prefix = "openroad-public-jenkins-agent"
+    prefix = get_jenkins_agent_prefix()
     instance_names = get_instance_names()
     agents = []
     for inst in instance_names:
@@ -26,6 +29,17 @@ def get_jenkins_agent_instance_names():
             agents.append(inst)
     agents.sort()
     return agents
+
+def create_unique_instance_name():
+    prefix = get_jenkins_agent_prefix()
+    agents = get_jenkins_agent_instance_names()
+    current_try_num = 1
+    while True:
+        current_try_name = prefix + "-" + str(current_try_num)
+        if not current_try_name in agents:
+            break
+        current_try_num += 1
+    return current_try_name    
 
 def run_command_remotely(user, host, keyfile, command):
     user_host=user+"@"+host
@@ -43,6 +57,8 @@ instances=get_instance_names()
 print("running instances=",instances," size=",len(instances))
 agents = get_jenkins_agent_instance_names()
 print("agents=",agents)
+unique_name = create_unique_instance_name()
+print(unique_name)
 #gcloud compute --project "foss-fpga-tools-ext-openroad" disks create "instance-1" --size "128" --zone "us-west2-a" --source-snapshot "firstjenkinsagentworks" --type "pd-ssd"
 
 #gcloud beta compute --project=foss-fpga-tools-ext-openroad instances create instance-1 --zone=us-west2-a --machine-type=c2-standard-16 --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=281156998478-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --disk=name=instance-1,device-name=instance-1,mode=rw,boot=yes,auto-delete=yes --reservation-affinity=any
