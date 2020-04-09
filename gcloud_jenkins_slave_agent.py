@@ -8,9 +8,11 @@ def get_external_ip_from_list_return_value(instance_list):
     return external_ip
 
 def get_instance_names(instance_list_gcloud_retval):
+    instance_list_gcloud_retval = instance_list_gcloud_retval[1: len(instance_list_gcloud_retval)]
     instance_list = []
     for inst_retval in instance_list_gcloud_retval:
-        instance_list.append(inst_retval.split()[0])
+        inst = inst_retval.split()[0]
+        instance_list.append(inst.decode('utf-8'))
     return instance_list
 
 def run_command_print_stdout(command):
@@ -31,10 +33,9 @@ def run_command_remotely_ssh(user, host, keyfile, command):
     return result
 
 retval_instances = run_command_print_stdout(["gcloud", "compute", "instances", "list"])
-#print("retval_instances=",retval_instances)
-#ip_addr = get_external_ip_from_list_return_value(retval_instances)
-#print("ip_addr=", ip_addr)
-print("instances=",get_instance_names(retval_instances))
+instances=get_instance_names(retval_instances)
+print("instances=",instances)
+
 #gcloud compute --project "foss-fpga-tools-ext-openroad" disks create "instance-1" --size "128" --zone "us-west2-a" --source-snapshot "firstjenkinsagentworks" --type "pd-ssd"
 
 #gcloud beta compute --project=foss-fpga-tools-ext-openroad instances create instance-1 --zone=us-west2-a --machine-type=c2-standard-16 --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=281156998478-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --disk=name=instance-1,device-name=instance-1,mode=rw,boot=yes,auto-delete=yes --reservation-affinity=any
