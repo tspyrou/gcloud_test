@@ -34,7 +34,7 @@ def run_command_remotely_ssh(user, host, keyfile, command):
 
 retval_instances = run_command_print_stdout(["gcloud", "compute", "instances", "list"])
 instances=get_instance_names(retval_instances)
-print("instances=",instances)
+print("running instances=",instances)
 
 #gcloud compute --project "foss-fpga-tools-ext-openroad" disks create "instance-1" --size "128" --zone "us-west2-a" --source-snapshot "firstjenkinsagentworks" --type "pd-ssd"
 
@@ -50,6 +50,7 @@ print("instances=",instances)
 # Google cloud build, docker images etc, has docker container registry, private containers too
 # Make machines ephemeral. For example run jenkins server at UCSD but executors in the cloud.
 # Make deleting and stopping machines the same. Only stop is you want to keep data on the machine.
+
 
 
 
