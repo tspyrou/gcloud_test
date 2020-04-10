@@ -4,6 +4,7 @@ import array as arr
 
 def run_command_locally(command):
     #p1 = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
+    print("command=",command)
     p1 = subprocess.Popen(command, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     result = p1.stdout.readlines()

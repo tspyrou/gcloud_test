@@ -15,16 +15,17 @@ print(gu.run_command_locally(["gcloud", "compute", "--project", "foss-fpga-tools
 print(gu.run_command_locally(["gcloud", "compute", "disks", "list"]))
 
 #create instance
-#gcloud beta compute --project=foss-fpga-tools-ext-openroad instances create unique_name --zone=us-central1-c --machine-type=c2-standard-16 --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=281156998478-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --disk=name=unique_name,device-name=unique_name,mode=rw,boot=yes,auto-delete=yes --reservation-affinity=any
+#gcloud beta compute --project=foss-fpga-tools-ext-openroad instances create openroad-public-jenkins-agent-1 --zone=us-central1-c --machine-type=c2-standard-16 --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=281156998478-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append --disk=name=openroad-public-jenkins-agent-1,device-name=openroad-public-jenkins-agent-1,mode=rw,boot=yes,auto-delete=yes --reservation-affinity=any
 print("creating new instance",unique_name)
-print(gu.run_command_locally(["gcloud", "beta", "compute", "--project=foss-fpga-tools-ext-openroad", "instances", "create", unique_name, "--zone=us-central1-c", "--machine-type=c2-standard-16", "--subnet=default", "--network-tier=PREMIUM", "--maintenance-policy=MIGRATE", "--service-account=281156998478-compute@developer.gserviceaccount.com", "--scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append", "--disk=name=", unique_name, "device-name=", unique_name, "mode=rw,boot=yes,auto-delete=yes", "--reservation-affinity=any"]))
+print(gu.run_command_locally(["gcloud", "beta", "compute", "--project=foss-fpga-tools-ext-openroad", "instances", "create", unique_name, "--zone=us-central1-c", "--machine-type=c2-standard-16", "--subnet=default", "--network-tier=PREMIUM", "--maintenance-policy=MIGRATE", "--service-account=281156998478-compute@developer.gserviceaccount.com", "--scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append", "--disk-name="+unique_name, "device-name="+unique_name, "mode=rw,boot=yes,auto-delete=yes", "--reservation-affinity=any"]))
 print(gu.run_command_locally(["gcloud", "compute", "instances", "list"]))
 
 #send command
-#gcloud beta compute ssh --zone "us-west2-a" "openroad-public-jenkins-agent" --project "foss-fpga-tools-ext-openroad" -- uname -a
+#gcloud beta compute ssh openroad-public-jenkins-agent-1 -- "uname -a"
 print("running command on",unique_name)
-print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh", "--zone", "us-west2-a", unique_name, "--", "-t", "ls", "-al"]))
-print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh", "--zone", "us-west2-a", unique_name, "--", "-t", "touch", "t.t"]))
+print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, "--", "uname", "-a"]))
+print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, "--", "ls", "-al"]))
+print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, "--", "touch", "t.t"]))
 
 #delete instance
 #gcloud compute instances delete unique_name --delete-disks=all --quiet
