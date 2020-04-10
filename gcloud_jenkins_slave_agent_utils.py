@@ -10,6 +10,16 @@ def run_command_locally(command):
     result = p1.stdout.readlines()
     return result
 
+def get_disk_names():
+    disk_list_gcloud_retval = run_command_locally(["gcloud", "compute", "disks", "list"])
+    disk_list_gcloud_retval = disk_list_gcloud_retval[1: len(disk_list_gcloud_retval)]
+    disk_list = []
+    for desk_retval in disk_list_gcloud_retval:
+        desk = desk_retval.split()[0]
+        disk_list.append(desk.decode('utf-8'))
+    disk_list.sort()
+    return disk_list
+
 def get_instance_names():
     instance_list_gcloud_retval = run_command_locally(["gcloud", "compute", "instances", "list"])
     instance_list_gcloud_retval = instance_list_gcloud_retval[1: len(instance_list_gcloud_retval)]

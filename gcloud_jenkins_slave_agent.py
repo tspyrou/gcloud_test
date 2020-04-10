@@ -3,9 +3,11 @@ import sys
 import array as arr
 import gcloud_jenkins_slave_agent_utils as gu
 
-print(gu.run_command_locally(["ls", "-al"]))
-
 unique_name = gu.create_unique_instance_name()
+
+#check initial list
+print("disk_names",gu.get_disk_names())
+print("instance_names",gu.get_disk_names())
 
 #create disk
 print("create disk",unique_name)
@@ -23,9 +25,9 @@ cmd = cmd + ",mode=rw,boot=yes,auto-delete=yes --reservation-affinity=any"
 print(cmd.split())
 print(gu.run_command_locally(cmd.split()))
 
-#check inst and disk deleted
-print(gu.run_command_locally(["gcloud", "compute", "disks", "list"]))
-print(gu.run_command_locally(["gcloud", "compute", "instances", "list"]))
+#check if created
+print("disk_names",gu.get_disk_names())
+print("instance_names",gu.get_disk_names())
 
 #send commands
 print("running command on",unique_name)
@@ -42,6 +44,5 @@ print("deleting disk",unique_name)
 print(gu.run_command_locally(["gcloud", "compute", "disks", "delete", unique_name, "--quiet"]))
 
 #check inst and disk deleted
-print(gu.run_command_locally(["gcloud", "compute", "instances", "list"]))
-print(gu.run_command_locally(["gcloud", "compute", "disks", "list"]))
-
+print("disk_names",gu.get_disk_names())
+print("instance_names",gu.get_instance_names())
