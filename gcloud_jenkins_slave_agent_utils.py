@@ -44,14 +44,3 @@ def create_unique_instance_name():
         current_try_num += 1
     return current_try_name    
 
-def run_command_remotely(user, host, keyfile, command):
-    user_host=user+"@"+host
-    ssh = subprocess.Popen(["ssh", "-oStrictHostKeyChecking=no", "-i", keyfile, user_host, command],
-                       shell=False,
-                       stdout=subprocess.PIPE,
-                       stderr=subprocess.PIPE)
-    result = ssh.stdout.readlines()
-    if result == []:
-        error = ssh.stderr.readlines()
-        return error
-    return result
