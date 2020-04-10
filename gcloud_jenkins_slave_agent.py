@@ -23,7 +23,8 @@ print(gu.run_command_locally(["gcloud", "compute", "instances", "list"]))
 #send command
 #gcloud beta compute ssh --zone "us-west2-a" "openroad-public-jenkins-agent" --project "foss-fpga-tools-ext-openroad" -- uname -a
 print("running command on",unique_name)
-print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh", "--zone", "us-west2-a", unique_name, "--", "-t", "uname", "-a"]))
+print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh", "--zone", "us-west2-a", unique_name, "--", "-t", "ls", "-al"]))
+print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh", "--zone", "us-west2-a", unique_name, "--", "-t", "touch", "t.t"]))
 
 #delete instance
 #gcloud compute instances delete unique_name --delete-disks=all --quiet
