@@ -29,10 +29,17 @@ print(gu.run_command_locally(cmd.split()))
 print("disk_names",gu.get_disk_names())
 print("instance_names",gu.get_disk_names())
 
+#wait for ssh to wake up
+while True:
+    retval = gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, "--", "uname", "-a"])
+    if not (retval == []):
+        break
+
+zone = "--zone=us-central1-c"
 #send commands
 print("running command on",unique_name)
-print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, "--", "uname", "-a"]))
-print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, "--", "ls", "-al"]))
+print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, zone, "--", "uname", "-a"]))
+print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, zone, "--", "ls", "-al"]))
 
 
 #delete instance
