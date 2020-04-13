@@ -35,20 +35,27 @@ if not reuse_disk:
 #check initial list
 print("disk_names",gu.get_disk_names())
 print("instance_names",gu.get_disk_names())
+create_missing_disk = False
+if (not unique_name in gu.get_disk_names()) and reuse_disk:
+    print("Warning: --reuse_disk requested but disk", unique_name, "does not exist. Ignoring option and creating a new disk.")
+    create_missing_disk = True
 
-#create disk
-print("create disk",unique_name)
-cmd = "gcloud compute --project foss-fpga-tools-ext-openroad disks create " + unique_name + " "
-cmd = cmd + "--size 128 " + zone + " --source-snapshot firstjenkinsagentworks-docker-clean-cronv2 --type pd-ssd"
-print(cmd.split())
-print(gu.run_command_locally(cmd.split()))
+if create_missing_disk or (not reuse_disk):
+    #create disk
+    print("create disk",unique_name)
+    cmd = "gcloud compute --project foss-fpga-tools-ext-openroad disks create " + unique_name + " "
+    cmd = cmd + "--size 128 " + zone + " --source-snapshot firstjenkinsagentworks-docker-clean-cronv2 --type pd-ssd"
+    print(cmd.split())
+    print(gu.run_command_locally(cmd.split()))
+elif:
+    print("Reusing disk", unique_name)
 
 #create instance
 print("create instance",unique_name)
 cmd = "gcloud beta compute --project=foss-fpga-tools-ext-openroad instances create " + unique_name + " "
 cmd = cmd + zone + " --machine-type=c2-standard-16 --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=281156998478-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append "
 cmd = cmd+ "--disk=name=" + unique_name +",device-name=" + unique_name
-cmd = cmd + ",mode=rw,boot=yes,auto-delete=yes --reservation-affinity=any"
+cmd = cmd + ",mode=rw,boot=yes,auto-delete=no --reservation-affinity=any"
 print(cmd.split())
 print(gu.run_command_locally(cmd.split()))
 
@@ -57,7 +64,7 @@ print("disk_names",gu.get_disk_names())
 print("instance_names",gu.get_disk_names())
 
 #wait for ssh to wake up
-retries_left = 1000
+retries_left = 100
 while True:
     retval = gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, "--", "uname", "-a"])
     if not (retval == []):
