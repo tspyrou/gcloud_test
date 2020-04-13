@@ -54,3 +54,9 @@ def create_unique_instance_name():
         current_try_num += 1
     return current_try_name    
 
+def verify_unique_instance_name(name):
+    agents = get_jenkins_agent_instance_names()
+    found = name in agents
+    return not found
+
+
