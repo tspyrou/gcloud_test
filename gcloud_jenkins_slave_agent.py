@@ -13,20 +13,16 @@ zone = "--zone=us-central1-c"
 parser = argparse.ArgumentParser(description='Start jenkins agent on gcloud.')
 parser.add_argument('--reuse_disk', dest='reuse_disk', action='store_true',
                     help='reuse the instance\'s disk from a previous run, same name as unique instance')
-parser.add_argument('--delete_disk', dest='delete_disk', action='store_true',
-                    help='delete the instance\'s disk when done, don\'t do this when planning to reuse')
 parser.add_argument('unique_name', action='store',
                    help='unique gcloud instance name')
 parser.add_argument('command_to_run_remotely', action='store',
                    help='command to run remotely to start jenkins\' slave.jar')
 args = parser.parse_args()
 unique_name = args.unique_name
-delete_disk = args.delete_disk
 reuse_disk = args.reuse_disk
 slave_start_command = args.command_to_run_remotely
 print("unique_name=", unique_name)
 print("command_to_run_remotely=", slave_start_command)
-print("delete_disk=", delete_disk)
 print("reuse_disk=", reuse_disk)
 if not gu.verify_unique_instance_name(unique_name):
     print("There is already an instance named", unique_name, "exiting.")
@@ -61,16 +57,21 @@ print("disk_names",gu.get_disk_names())
 print("instance_names",gu.get_disk_names())
 
 #wait for ssh to wake up
+retries_left = 1000
 while True:
     retval = gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, "--", "uname", "-a"])
     if not (retval == []):
+        print(retval)
         break
-    print("new instance's ssh not up yet, trying again.")
+    retries_left -= 1
+    print("new instance's ssh not up yet, trying again. retries_left", retries_left)
+    if retries_left <= 0:
+        print("exhausted shh retries, skipping command")
 
-#send commands
-print("running command on",unique_name)
-print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, zone, "--", "uname", "-a"]))
-print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, zone, "--", "ls", "-al"]))
+if (retries_left > 0):
+    #send command
+    print("running command on",unique_name)
+    print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, zone, "--", "ls", "-al"]))
 
 
 #delete instance
@@ -89,7 +90,6 @@ if reuse_disk:
     if not unique_name in gu.get_disk_names():
         print("ERROR: disk", unique_name, " does not exist for re-use")
     
-
 #check inst and disk deleted
 print("disk_names",gu.get_disk_names())
 print("instance_names",gu.get_instance_names())
