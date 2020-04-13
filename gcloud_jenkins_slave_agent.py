@@ -28,9 +28,13 @@ print("unique_name=", unique_name)
 print("command_to_run_remotely=", slave_start_command)
 print("delete_disk=", delete_disk)
 print("reuse_disk=", reuse_disk)
-if not gu.verify_unique_instance_disk_name(unique_name):
+if not gu.verify_unique_instance_name(unique_name):
     print("There is already an instance named", unique_name, "exiting.")
     exit()
+if not reuse_disk:
+    if not gu.verify_unique_disk_name(unique_name):
+        print("There is already an instance named", unique_name, "exiting.")
+        exit()
 
 #check initial list
 print("disk_names",gu.get_disk_names())

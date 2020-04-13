@@ -54,11 +54,14 @@ def create_unique_instance_name():
         current_try_num += 1
     return current_try_name    
 
-def verify_unique_instance_disk_name(name):
-    agents = get_jenkins_agent_instance_names()
+def verify_unique_instance_name(name):
+    agents = get_instance_names()
     found = name in agents
     if found:
         return False
+    return True
+
+def verify_unique_disk_name(name):
     disks = get_disk_names()
     found = name in disks
     if found:
