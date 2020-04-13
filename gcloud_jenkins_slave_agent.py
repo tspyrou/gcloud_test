@@ -2,9 +2,32 @@ import subprocess
 import sys
 import array as arr
 import gcloud_jenkins_slave_agent_utils as gu
+import argparse
 
 zone = "--zone=us-central1-c"
-unique_name = gu.create_unique_instance_name()
+
+#print("This is the name of the script:", sys.argv[0])
+#print("Number of arguments: ", len(sys.argv))
+#print("The arguments are: " , str(sys.argv))
+
+parser = argparse.ArgumentParser(description='Start jenkins agent on gcloud.')
+parser.add_argument('--reuse_disk', dest='reuse_disk', action='store_true',
+                    help='reuse the instance\'s disk from a previous run, same name as unique instance')
+parser.add_argument('--delete_disk', dest='delete_disk', action='store_true',
+                    help='delete the instance\'s disk when done, don\'t do this when planning to reuse')
+parser.add_argument('unique_name', action='store',
+                   help='unique gcloud instance name')
+parser.add_argument('command_to_run_remotely', action='store',
+                   help='command to run remotely to start jenkins\' slave.jar')
+args = parser.parse_args()
+unique_name = args.unique_name
+delete_disk = args.delete_disk
+reuse_disk = args.reuse_disk
+slave_start_command = args.command_to_run_remotely
+print("unique_name=", unique_name)
+print("command_to_run_remotely=", slave_start_command)
+print("delete_disk=", delete_disk)
+print("reuse_disk=", reuse_disk)
 
 #check initial list
 print("disk_names",gu.get_disk_names())
