@@ -47,7 +47,7 @@ if create_missing_disk or (not reuse_disk):
     cmd = cmd + "--size 128 " + zone + " --source-snapshot firstjenkinsagentworks-docker-clean-cronv2 --type pd-ssd"
     print(cmd.split())
     print(gu.run_command_locally(cmd.split()))
-elif:
+else:
     print("Reusing disk", unique_name)
 
 #create instance
