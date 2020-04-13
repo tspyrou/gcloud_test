@@ -76,10 +76,19 @@ print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, 
 #delete instance
 print("deleting instance",unique_name)
 print(gu.run_command_locally(["gcloud", "compute", "instances", "delete", unique_name, "--quiet"]))
+if unique_name in gu.get_instance_names():
+    print("ERROR: instance", unique_name, " not deleted correctly")
 
 #delete disk
-print("deleting disk",unique_name)
-print(gu.run_command_locally(["gcloud", "compute", "disks", "delete", unique_name, "--quiet"]))
+if not reuse_disk:
+    print("deleting disk",unique_name)
+    print(gu.run_command_locally(["gcloud", "compute", "disks", "delete", unique_name, "--quiet"]))
+    if unique_name in gu.get_disk_names():
+        print("ERROR: disk", unique_name, " not deleted correctly")
+if reuse_disk:
+    if not unique_name in gu.get_disk_names():
+        print("ERROR: disk", unique_name, " does not exist for re-use")
+    
 
 #check inst and disk deleted
 print("disk_names",gu.get_disk_names())
