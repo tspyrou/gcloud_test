@@ -28,9 +28,7 @@ if not gu.verify_unique_instance_name(unique_name):
 if not reuse_disk:
     if not gu.verify_unique_disk_name(unique_name):
         print("There is already a disk named", unique_name, "deleting it.")
-        print(gu.run_command_locally(["gcloud", "compute", "disks", "delete", unique_name, "--quiet"]))
-        if unique_name in gu.get_disk_names():
-            print("ERROR: disk", unique_name, " not deleted correctly")
+        print(gu.delete_disk(unique_name))
 
 #check initial list of instances and disks
 print("disk_names",gu.get_disk_names())
@@ -51,12 +49,8 @@ else:
 
 #create instance, do not auto delete disk
 print("create instance",unique_name)
-cmd = "gcloud beta compute --project=foss-fpga-tools-ext-openroad instances create " + unique_name + " "
-cmd = cmd + zone + " --machine-type=c2-standard-16 --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=281156998478-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append "
-cmd = cmd+ "--disk=name=" + unique_name +",device-name=" + unique_name
-cmd = cmd + ",mode=rw,boot=yes,auto-delete=no --reservation-affinity=any"
-print(gu.run_command_locally(cmd.split()))
-
+print(gu.create_instance(unique_name, zone))
+              
 #check if created
 print("disk_names",gu.get_disk_names())
 print("instance_names",gu.get_disk_names())
@@ -72,6 +66,7 @@ while True:
     print("new instance's ssh not up yet, trying again. retries_left", retries_left)
     if retries_left <= 0:
         print("exhausted shh retries, skipping command")
+        break
 
 if (retries_left > 0):
     #send command
@@ -88,9 +83,7 @@ if unique_name in gu.get_instance_names():
 #delete disk
 if not reuse_disk:
     print("deleting disk",unique_name)
-    print(gu.run_command_locally(["gcloud", "compute", "disks", "delete", unique_name, "--quiet"]))
-    if unique_name in gu.get_disk_names():
-        print("ERROR: disk", unique_name, " not deleted correctly")
+    print(gu.delete_disk(unique_name))          
 if reuse_disk:
     if not unique_name in gu.get_disk_names():
         print("ERROR: disk", unique_name, " does not exist for re-use")
