@@ -29,8 +29,10 @@ if not gu.verify_unique_instance_name(unique_name):
     exit()
 if not reuse_disk:
     if not gu.verify_unique_disk_name(unique_name):
-        print("There is already an instance named", unique_name, "exiting.")
-        exit()
+        print("There is already a disk named", unique_name, "deleting it.")
+        print(gu.run_command_locally(["gcloud", "compute", "disks", "delete", unique_name, "--quiet"]))
+        if unique_name in gu.get_disk_names():
+            print("ERROR: disk", unique_name, " not deleted correctly")
 
 #check initial list
 print("disk_names",gu.get_disk_names())
