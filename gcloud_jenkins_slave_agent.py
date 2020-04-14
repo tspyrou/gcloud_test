@@ -4,12 +4,10 @@ import array as arr
 import gcloud_jenkins_slave_agent_utils as gu
 import argparse
 
+# Run jenkins in central region for reduced cost and higher cpu allocation
 zone = "--zone=us-central1-c"
 
-#print("This is the name of the script:", sys.argv[0])
-#print("Number of arguments: ", len(sys.argv))
-#print("The arguments are: " , str(sys.argv))
-
+# Parse and check arguments
 parser = argparse.ArgumentParser(description='Start jenkins agent on gcloud.')
 parser.add_argument('--reuse_disk', dest='reuse_disk', action='store_true',
                     help='reuse the instance\'s disk from a previous run, same name as unique instance')
@@ -34,14 +32,13 @@ if not reuse_disk:
         if unique_name in gu.get_disk_names():
             print("ERROR: disk", unique_name, " not deleted correctly")
 
-#check initial list
+#check initial list of instances and disks
 print("disk_names",gu.get_disk_names())
 print("instance_names",gu.get_disk_names())
 create_missing_disk = False
 if (not unique_name in gu.get_disk_names()) and reuse_disk:
     print("Warning: --reuse_disk requested but disk", unique_name, "does not exist. Ignoring option and creating a new disk.")
     create_missing_disk = True
-
 if create_missing_disk or (not reuse_disk):
     #create disk
     print("create disk",unique_name)
@@ -52,13 +49,12 @@ if create_missing_disk or (not reuse_disk):
 else:
     print("Reusing disk", unique_name)
 
-#create instance
+#create instance, do not auto delete disk
 print("create instance",unique_name)
 cmd = "gcloud beta compute --project=foss-fpga-tools-ext-openroad instances create " + unique_name + " "
 cmd = cmd + zone + " --machine-type=c2-standard-16 --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=281156998478-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append "
 cmd = cmd+ "--disk=name=" + unique_name +",device-name=" + unique_name
 cmd = cmd + ",mode=rw,boot=yes,auto-delete=no --reservation-affinity=any"
-print(cmd.split())
 print(gu.run_command_locally(cmd.split()))
 
 #check if created
@@ -66,7 +62,7 @@ print("disk_names",gu.get_disk_names())
 print("instance_names",gu.get_disk_names())
 
 #wait for ssh to wake up
-retries_left = 100
+retries_left = 20
 while True:
     retval = gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, "--", "uname", "-a"])
     if not (retval == []):
