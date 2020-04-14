@@ -6,7 +6,6 @@ def run_command_locally(command):
     #p1 = subprocess.Popen(command, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)
     print("command=",command)
     p1 = subprocess.Popen(command, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
     result = p1.stdout.readlines()
     return result
 
@@ -75,6 +74,7 @@ def delete_disk(unique_name):
     return retval
 
 def create_instance(unique_name, zone):
+    #create instance, do not auto delete the disk so it can be reused if desired
     cmd = "gcloud beta compute --project=foss-fpga-tools-ext-openroad instances create " + unique_name + " "
     cmd = cmd + zone + " --machine-type=c2-standard-16 --subnet=default --network-tier=PREMIUM --maintenance-policy=MIGRATE --service-account=281156998478-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append "
     cmd = cmd+ "--disk=name=" + unique_name +",device-name=" + unique_name
@@ -82,4 +82,7 @@ def create_instance(unique_name, zone):
     retval = run_command_locally(cmd.split())
     return retval
 
-    
+def delete_instance(unique_name):
+    print(run_command_locally(["gcloud", "compute", "instances", "delete", unique_name, "--quiet"]))
+    if unique_name in get_instance_names():
+        print("ERROR: instance", unique_name, " not deleted correctly")

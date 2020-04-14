@@ -22,17 +22,22 @@ slave_start_command = args.command_to_run_remotely
 print("unique_name=", unique_name)
 print("command_to_run_remotely=", slave_start_command)
 print("reuse_disk=", reuse_disk)
+
+# Report initial list of instances and disks to log
+print("disk_names",gu.get_disk_names())
+print("instance_names",gu.get_disk_names())
+
+# Cleanup if there are zombie instances or disks for some reason
 if not gu.verify_unique_instance_name(unique_name):
-    print("There is already an instance named", unique_name, "exiting.")
-    exit()
+    print("There is already an instance named", unique_name, "deleting it.")
+    print(gu.delete_instance(unique_name))
+    
 if not reuse_disk:
     if not gu.verify_unique_disk_name(unique_name):
         print("There is already a disk named", unique_name, "deleting it.")
         print(gu.delete_disk(unique_name))
 
-#check initial list of instances and disks
-print("disk_names",gu.get_disk_names())
-print("instance_names",gu.get_disk_names())
+# Create or reuse the disk
 create_missing_disk = False
 if (not unique_name in gu.get_disk_names()) and reuse_disk:
     print("Warning: --reuse_disk requested but disk", unique_name, "does not exist. Ignoring option and creating a new disk.")
@@ -47,7 +52,7 @@ if create_missing_disk or (not reuse_disk):
 else:
     print("Reusing disk", unique_name)
 
-#create instance, do not auto delete disk
+#create instance, do not auto delete the disk so it can be reused if desired
 print("create instance",unique_name)
 print(gu.create_instance(unique_name, zone))
               
@@ -71,14 +76,12 @@ while True:
 if (retries_left > 0):
     #send command
     print("running command on",unique_name)
-    print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, zone, "--", "ls", "-al"]))
+    print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, zone, "--", slave_start_command]))
 
 
 #delete instance
 print("deleting instance",unique_name)
-print(gu.run_command_locally(["gcloud", "compute", "instances", "delete", unique_name, "--quiet"]))
-if unique_name in gu.get_instance_names():
-    print("ERROR: instance", unique_name, " not deleted correctly")
+print(gu.delete_instance(unique_name))
 
 #delete disk
 if not reuse_disk:
