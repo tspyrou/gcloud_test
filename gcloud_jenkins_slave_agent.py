@@ -1,8 +1,12 @@
-import subprocess
 import sys
+import subprocess
 import array as arr
-import gcloud_jenkins_slave_agent_utils as gu
 import argparse
+import os
+print("path to script=",os.path.dirname(os.path.realpath(__file__)))
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
+print("current path=",sys.path)
+import gcloud_jenkins_slave_agent_utils as gu
 
 # Run jenkins in central region for reduced cost and higher cpu allocation
 zone = "--zone=us-central1-c"
