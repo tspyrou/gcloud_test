@@ -65,7 +65,7 @@ print("disk_names",gu.get_disk_names())
 print("instance_names",gu.get_disk_names())
 
 #wait for ssh to wake up
-retries_left = 20
+retries_left = 50
 while True:
     retval = gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, "--", "uname", "-a"])
     if not (retval == []):
@@ -79,8 +79,11 @@ while True:
 
 if (retries_left > 0):
     #send command
-    print("running command on",unique_name)
-    print(gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, zone, "--", slave_start_command]))
+    print("running", slave_start_command, "on",unique_name)
+    cmd = ["gcloud", "beta", "compute", "ssh",  unique_name, zone, "--","-tT -v"]
+    for elem in slave_start_command.split():
+        cmd.append(elem)
+    print(gu.run_command_locally(cmd))
 
 
 #delete instance
