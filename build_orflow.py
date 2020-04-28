@@ -34,6 +34,7 @@ run_command_locally("git clone /home/tajayi/projects/OpenROAD/alpha-release-plat
 os.chdir(starting_dir)
 os.chdir("OpenROAD-flow")
 run_command_locally("./build_openroad.sh --latest --local")
+run_command_locally("bash -c 'source ~/.bashrc'")
 check_exists("openroad")
 check_exists("yosys")
 check_exists("TritonRoute")

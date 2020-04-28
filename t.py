@@ -24,7 +24,7 @@ def run_command_locally(command):
 starting_dir = os.getcwd()
 print("path to script=",os.path.dirname(os.path.realpath(__file__)))
 print("starting_dir =",starting_dir)
-
+run_command_locally("bash -c 'source ~/.bashrc'")
 check_exists("openroad")
 check_exists("yosys")
 check_exists("TritonRoute")
