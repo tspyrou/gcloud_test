@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import sys
 import subprocess
 import array as arr
@@ -34,7 +35,7 @@ run_command_locally("git clone /home/tajayi/projects/OpenROAD/alpha-release-plat
 os.chdir(starting_dir)
 os.chdir("OpenROAD-flow")
 run_command_locally("./build_openroad.sh --latest --local")
-run_command_locally("bash -c 'source ~/.bashrc'")
+run_command_locally("bash -c 'source ./setup_env.sh'")
 check_exists("openroad")
 check_exists("yosys")
 check_exists("TritonRoute")
