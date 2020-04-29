@@ -67,8 +67,8 @@ def verify_unique_disk_name(name):
         return False
     return True
 
-def delete_disk(unique_name):
-    retval = run_command_locally(["gcloud", "compute", "disks", "delete", unique_name, "--quiet"])
+def delete_disk(unique_name, zone):
+    retval = run_command_locally(["gcloud", "compute", "disks", "delete", unique_name, zone, "--quiet"])
     if unique_name in get_disk_names():
         print("ERROR: disk", unique_name, " not deleted correctly")
     return retval
@@ -82,7 +82,12 @@ def create_instance(unique_name, zone):
     retval = run_command_locally(cmd.split())
     return retval
 
-def delete_instance(unique_name):
-    print(run_command_locally(["gcloud", "compute", "instances", "delete", unique_name, "--quiet"]))
+def delete_instance(unique_name, zone):
+    print(run_command_locally(["gcloud", "compute", "instances", "delete", unique_name, zone, "--quiet"]))
     if unique_name in get_instance_names():
         print("ERROR: instance", unique_name, " not deleted correctly")
+
+# Basic test
+if __name__ == "__main__":
+    print("get_disk_names():", get_disk_names())
+    print("get_instance_names():", get_instance_names())

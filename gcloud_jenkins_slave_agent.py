@@ -29,17 +29,17 @@ print("reuse_disk=", reuse_disk)
 
 # Report initial list of instances and disks to log
 print("disk_names",gu.get_disk_names())
-print("instance_names",gu.get_disk_names())
+print("instance_names",gu.get_instance_names())
 
 # Cleanup if there are zombie instances or disks for some reason
 if not gu.verify_unique_instance_name(unique_name):
     print("There is already an instance named", unique_name, "deleting it.")
-    print(gu.delete_instance(unique_name))
+    print(gu.delete_instance(unique_name, zone))
     
 if not reuse_disk:
     if not gu.verify_unique_disk_name(unique_name):
         print("There is already a disk named", unique_name, "deleting it.")
-        print(gu.delete_disk(unique_name))
+        print(gu.delete_disk(unique_name, zone))
 
 # Create or reuse the disk
 create_missing_disk = False
@@ -67,7 +67,7 @@ print("instance_names",gu.get_disk_names())
 #wait for ssh to wake up
 retries_left = 50
 while True:
-    retval = gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, "--", "uname", "-a"])
+    retval = gu.run_command_locally(["gcloud", "beta", "compute", "ssh",  unique_name, zone, "--", "uname", "-a"])
     if not (retval == []):
         print(retval)
         break
@@ -88,12 +88,12 @@ if (retries_left > 0):
 
 #delete instance
 print("deleting instance",unique_name)
-print(gu.delete_instance(unique_name))
+print(gu.delete_instance(unique_name, zone))
 
 #delete disk
 if not reuse_disk:
     print("deleting disk",unique_name)
-    print(gu.delete_disk(unique_name))          
+    print(gu.delete_disk(unique_name, zone))
 if reuse_disk:
     if not unique_name in gu.get_disk_names():
         print("ERROR: disk", unique_name, " does not exist for re-use")
