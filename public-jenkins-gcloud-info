@@ -1,0 +1,1 @@
+ creating an instance named openroad-public-jenkins-agent from snapshot openroad-jenkins-snapshot-20200513 will work right out of the box. The jar file needed is in the snapshot. The cron files are there too
