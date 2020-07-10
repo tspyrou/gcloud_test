@@ -1,0 +1,6 @@
+https://forums.centos.org/viewtopic.php?t=67436
+sudo yum install centos-release-scl
+sudo yum install devtoolset-8-gcc*
+scl enable devtoolset-8 bash
+which gcc
+gcc --version
