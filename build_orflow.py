@@ -28,7 +28,7 @@ print("starting_dir =",starting_dir)
 
 run_command_locally("git clone --recursive --branch openroad https://github.com/The-OpenROAD-Project/OpenROAD-flow.git")
 #run_command_locally("git clone /home/tajayi/projects/OpenROAD/alpha-release-platforms/gf14.git")
-run_command_locally("git clone /home/tajayi/projects/OpenROAD/alpha-release-platforms/tsmc65lp.git")
+#run_command_locally("git clone /home/tajayi/projects/OpenROAD/alpha-release-platforms/tsmc65lp.git")
 os.chdir("OpenROAD-flow/flow/")
 run_command_locally("git clone /home/tajayi/projects/OpenROAD/alpha-release-platforms/private.git")
 os.chdir(starting_dir)
