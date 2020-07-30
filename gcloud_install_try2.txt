@@ -1,0 +1,110 @@
+tspyrou@DESKTOP-8MMEAST:~$  gcloud compute images list --project github-enterprise-public --no-standard-images
+
+$: command not found
+tspyrou@DESKTOP-8MMEAST:~$ tspyrou@DESKTOP-8MMEAST:~$  gcloud compute images list --project github-enterprise-public --no-standard-images
+NAME                       PROJECT                   FAMILY  DEPRECATED  STATUS
+github-enterprise-2-18-0   github-enterprise-public                      READY
+github-enterprise-2-18-1   github-enterprise-public                      READY
+github-enterprise-2-18-10  github-enterprise-public                      READY
+github-enterprise-2-18-11  github-enterprise-public                      READY
+github-enterprise-2-18-12  github-enterprise-public                      READY
+github-enterprise-2-18-13  github-enterprise-public                      READY
+github-enterprise-2-18-14  github-enterprise-public                      READY
+github-enterprise-2-18-15  github-enterprise-public                      READY
+github-enterprise-2-18-16  github-enterprise-public                      READY
+github-enterprise-2-18-17  github-enterprise-public                      READY
+github-enterprise-2-18-18  github-enterprise-public                      READY
+github-enterprise-2-18-19  github-enterprise-public                      READY
+github-enterprise-2-18-2   github-enterprise-public                      READY
+github-enterprise-2-18-20  github-enterprise-public                      READY
+github-enterprise-2-18-21  github-enterprise-public                      READY
+github-enterprise-2-18-22  github-enterprise-public                      READY
+github-enterprise-2-18-23  github-enterprise-public                      READY
+github-enterprise-2-18-3   github-enterprise-public                      READY
+github-enterprise-2-18-4   github-enterprise-public                      READY
+github-enterprise-2-18-5   github-enterprise-public                      READY
+github-enterprise-2-18-6   github-enterprise-public                      READY
+github-enterprise-2-18-7   github-enterprise-public                      READY
+github-enterprise-2-18-8   github-enterprise-public                      READY
+github-enterprise-2-18-9   github-enterprise-public                      READY
+github-enterprise-2-19-0   github-enterprise-public                      READY
+github-enterprise-2-19-1   github-enterprise-public                      READY
+github-enterprise-2-19-10  github-enterprise-public                      READY
+github-enterprise-2-19-11  github-enterprise-public                      READY
+github-enterprise-2-19-12  github-enterprise-public                      READY
+github-enterprise-2-19-13  github-enterprise-public                      READY
+github-enterprise-2-19-14  github-enterprise-public                      READY
+github-enterprise-2-19-15  github-enterprise-public                      READY
+github-enterprise-2-19-16  github-enterprise-public                      READY
+github-enterprise-2-19-17  github-enterprise-public                      READY
+github-enterprise-2-19-18  github-enterprise-public                      READY
+github-enterprise-2-19-2   github-enterprise-public                      READY
+github-enterprise-2-19-3   github-enterprise-public                      READY
+github-enterprise-2-19-4   github-enterprise-public                      READY
+github-enterprise-2-19-5   github-enterprise-public                      READY
+github-enterprise-2-19-6   github-enterprise-public                      READY
+github-enterprise-2-19-7   github-enterprise-public                      READY
+github-enterprise-2-19-8   github-enterprise-public                      READY
+github-enterprise-2-19-9   github-enterprise-public                      READY
+github-enterprise-2-20-0   github-enterprise-public                      READY
+github-enterprise-2-20-1   github-enterprise-public                      READY
+github-enterprise-2-20-10  github-enterprise-public                      READY
+github-enterprise-2-20-11  github-enterprise-public                      READY
+github-enterprise-2-20-12  github-enterprise-public                      READY
+github-enterprise-2-20-2   github-enterprise-public                      READY
+github-enterprise-2-20-3   github-enterprise-public                      READY
+github-enterprise-2-20-4   github-enterprise-public                      READY
+github-enterprise-2-20-5   github-enterprise-public                      READY
+github-enterprise-2-20-6   github-enterprise-public                      READY
+github-enterprise-2-20-7   github-enterprise-public                      READY
+github-enterprise-2-20-8   github-enterprise-public                      READY
+github-enterprise-2-20-9   github-enterprise-public                      READY
+github-enterprise-2-21-0   github-enterprise-public                      READY
+github-enterprise-2-21-1   github-enterprise-public                      READY
+github-enterprise-2-21-2   github-enterprise-public                      READY
+github-enterprise-2-21-3   github-enterprise-public                      READY
+tspyrou@DESKTOP-8MMEAST:~$ gcloud compute networks create githubenterprise-network --subnet-mode auto
+Created [https://www.googleapis.com/compute/v1/projects/foss-fpga-tools-ext-openroad/global/networks/githubenterprise-network].
+NAME                      SUBNET_MODE  BGP_ROUTING_MODE  IPV4_RANGE  GATEWAY_IPV4
+githubenterprise-network  AUTO         REGIONAL
+
+Instances on this network will not be reachable until firewall rules
+are created. As an example, you can allow all internal traffic between
+instances as well as SSH, RDP, and ICMP by running:
+
+$ gcloud compute firewall-rules create <FIREWALL_NAME> --network githubenterprise-network --allow tcp,udp,icmp --source-ranges <IP_RANGE>
+$ gcloud compute firewall-rules create <FIREWALL_NAME> --network githubenterprise-network --allow tcp:22,tcp:3389,icmp
+
+tspyrou@DESKTOP-8MMEAST:~$ 
+tspyrou@DESKTOP-8MMEAST:~$ gcloud compute firewall-rules create githubenterprise-rule --network githubenterprise-network --allow tcp:22,tcp:25,tcp:80,tcp:122,udp:161,tcp:443,udp:1194,tcp:8080,tcp:8443,tcp:9418,icmp
+Creating firewall...⠶Created [https://www.googleapis.com/compute/v1/projects/foss-fpga-tools-ext-openroad/global/firewalls/githubenterprise-rule].
+Creating firewall...done.
+NAME                   NETWORK                   DIRECTION  PRIORITY  ALLOW                                                                                  DENY  DISABLED
+githubenterprise-rule  githubenterprise-network  INGRESS    1000      tcp:22,tcp:25,tcp:80,tcp:122,udp:161,tcp:443,udp:1194,tcp:8080,tcp:8443,tcp:9418,icmp        False
+
+tspyrou@DESKTOP-8MMEAST:~$ gcloud compute disks create githubenterprise-openroad-disk-2 --type=pd-ssd --size=200GB --zone=us-central1-c
+Created [https://www.googleapis.com/compute/v1/projects/foss-fpga-tools-ext-openroad/zones/us-central1-c/disks/githubenterprise-openroad-disk-2].
+NAME                              ZONE           SIZE_GB  TYPE    STATUS
+githubenterprise-openroad-disk-2  us-central1-c  200      pd-ssd  READY
+
+New disks are unformatted. You must format and mount a disk before it
+can be used. You can find instructions on how to do this at:
+
+https://cloud.google.com/compute/docs/disks/add-persistent-disk#formatting
+
+tspyrou@DESKTOP-8MMEAST:~$ gcloud compute instances create githubenterprise-openroad2 --machine-type n1-standard-8 --image github-enterprise-2-21-3 --disk name=githubenterprise-openroad-disk-2 --metadata serial-port-enable=1 --zone us-central1-c  --network githubenterprise-network --image-project github-enterprise-public
+Created [https://www.googleapis.com/compute/v1/projects/foss-fpga-tools-ext-openroad/zones/us-central1-c/instances/githubenterprise-openroad2].
+NAME                        ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP    STATUS
+githubenterprise-openroad2  us-central1-c  n1-standard-8               10.128.0.2   34.71.207.225  RUNNING
+tspyrou@DESKTOP-8MMEAST:~$ gcloud compute instances list
+NAME                             ZONE           MACHINE_TYPE    PREEMPTIBLE  INTERNAL_IP    EXTERNAL_IP     STATUS
+auc-jenkins                      us-central1-c  n1-standard-4                10.128.15.236  35.226.94.39    RUNNING
+cherry                           us-central1-c  n1-standard-2                10.128.0.61    34.71.234.56    RUNNING
+githubenterprise-openroad2       us-central1-c  n1-standard-8                10.128.0.2     35.225.186.2    RUNNING
+matt                             us-central1-c  c2-standard-4                10.128.0.23                    TERMINATED
+mgwoo-instance                   us-central1-c  n1-standard-4                10.128.0.58    35.238.81.190   RUNNING
+openroad-public-jenkins-agent-1  us-central1-c  n1-standard-32               10.128.15.194  34.72.224.212   RUNNING
+openroad-release-ubuntu          us-central1-c  f1-micro                     10.128.0.59    35.238.81.199   RUNNING
+ravi                             us-central1-c  c2-standard-4                10.128.0.51    35.192.127.108  RUNNING
+test-openroad-release            us-central1-c  n1-standard-1                10.128.0.56    35.188.23.171   RUNNING
+tspyrou@DESKTOP-8MMEAST:~$ 
