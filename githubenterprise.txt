@@ -1,0 +1,18 @@
+ 1250  gcloud compute firewall-rules create RULE-NAME   --network NETWORK-NAME githubenterprise  --allow tcp:22,tcp:25,tcp:80,tcp:122,udp:161,tcp:443,udp:1194,tcp:8080,tcp:8443,tcp:9418,icmp
+ 1251  gcloud compute firewall-rules create githubenterpriserule  --network githubenterprise  --allow tcp:22,tcp:25,tcp:80,tcp:122,udp:161,tcp:443,udp:1194,tcp:8080,tcp:8443,tcp:9418,icmp
+ 1252  $ gcloud compute disks create DATA-DISK-NAME --size DATA-DISK-SIZE --type DATA-DISK-TYPE --zone ZONE
+ 1253  $ gcloud compute disks create githubenterprise-openroad --size 128GB --type SSD --zone ZONE
+ 1254  gcloud compute disks create githubenterprise-openroad --size 128GB --type SSD --zone ZONE
+ 1255  gcloud compute disks list | grep github
+ 1256  gcloud compute images list --project github-enterprise-public --no-standard-images
+ 1257  gcloud compute instances create githubenterprise-openroad  --machine-type n1-standard-8 --image github-enterprise-2-21-3 --disk name=githubenterprise-openroad --metadata serial-port-enable=1 --zone us-central1-c --network githubenterprise --image-project github-enterprise-public
+ 1258  gcloud compute instances create githubenterprise-openroad  --machine-type n1-standard-8 --image github-enterprise-2-21-3 --disk githubenterprise-openroad --metadata serial-port-enable=1 --zone us-central1-c --network githubenterprise --image-project github-enterprise-public
+ 1259  gcloud compute instances create githubenterprise-openroad --machine-type n1-standard-8 --image github-enterprise-2-21-3 --disk name=githubenterprise-openroad --metadata serial-port-enable=1 --zone us-central1-c --network githubenterprise --image-project github-enterprise-public
+ 1260  gcloud compute disks list
+ 1261  gcloud compute instances create githubenterprise-openroad --machine-type n1-standard-8 --image github-enterprise-2-21-3 --disk name=githubenterprise-disk --metadata serial-port-enable=1 --zone us-central1-c --network githubenterprise --image-project github-enterprise-public
+
+ 1277  gcloud compute images list --project github-enterprise-public --no-standard-images
+ 1278  gcloud compute networks create GITHUB-ENTERPRISE --subnet-mode auto
+ 1279  gcloud compute networks create GITHUBENTERPRISE --subnet-mode auto
+ 1280  gcloud compute networks create githubenterprise --subnet-mode auto
+ 1281  gcloud compute firewall-rules create githubenterprise-rules   --network githubenterprise \
