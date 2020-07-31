@@ -107,4 +107,4 @@ openroad-public-jenkins-agent-1  us-central1-c  n1-standard-32               10.
 openroad-release-ubuntu          us-central1-c  f1-micro                     10.128.0.59    35.238.81.199   RUNNING
 ravi                             us-central1-c  c2-standard-4                10.128.0.51    35.192.127.108  RUNNING
 test-openroad-release            us-central1-c  n1-standard-1                10.128.0.56    35.188.23.171   RUNNING
-tspyrou@DESKTOP-8MMEAST:~$ 
+tspyrou@DESKTOP-8MMEAST:~$ gcloud compute instances create githubenterprise-openroad2 --machine-type n1-standard-8 --image github-enterprise-2-21-3 --disk name=githubenterprise-openroad-disk-2 --metadata serial-port-enable=1 --zone us-central1-c  --network githubenterprise-network --image-project github-enterprise-public --subnet=githubenterprise-network --address=35.232.204.46 --network-tier=PREMIUM
