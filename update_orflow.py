@@ -21,7 +21,7 @@ def check_exists(pgm):
 
 def run_command_locally(command):
     print("command=",command)
-    subprocess.run(shlex.split(command))
+    subprocess.run(shlex.split(command), check=True)
 
 parser = argparse.ArgumentParser(description='Update OR Flow')
 parser.add_argument('--clean', action='store_true')
