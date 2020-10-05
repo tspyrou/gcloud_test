@@ -30,7 +30,7 @@ run_command_locally("git clone --recursive --branch openroad  git@github.com:The
 
 run_command_locally("git clone /home/zf4_projects/OpenROAD-guest/platforms/gf12.git")
 #run_command_locally("git clone /home/zf4_projects/OpenROAD-guest/platforms/tsmc65lp.git")
-run_command_locally("git clone https://github.com/The-OpenROAD-Project-private/private_tool_scripts.git")
+run_command_locally("git clone git@github.com:The-OpenROAD-Project-private/private_tool_scripts.git")
 
 os.chdir("OpenROAD-flow-private")
 run_command_locally("./build_openroad.sh --latest --local --nice")
