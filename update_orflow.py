@@ -5,6 +5,7 @@ import array as arr
 import argparse
 import os
 import shlex
+import argparse
 
 def which(pgm):
     path=os.getenv('PATH')
@@ -20,7 +21,11 @@ def check_exists(pgm):
 
 def run_command_locally(command):
     print("command=",command)
-    subprocess.run(shlex.split(command), stdout=subprocess.PIPE).stdout.decode('utf-8')
+    subprocess.run(shlex.split(command))
+
+parser = argparse.ArgumentParser(description='Update OR Flow')
+parser.add_argument('--clean', action='store_true')
+args = parser.parse_args()
 
 starting_dir = os.getcwd()
 print("path to script=",os.path.dirname(os.path.realpath(__file__)))
@@ -29,35 +34,26 @@ starting_dir = os.getcwd()
 print("path to script=",os.path.dirname(os.path.realpath(__file__)))
 print("starting_dir =",starting_dir)
 
-os.chdir("OpenROAD-flow")
+os.environ['OPENROAD_FLOW_NO_GIT_INIT'] = 'Y'
+
+os.chdir("OpenROAD-flow-private")
 run_command_locally("git pull")
-os.chdir("flow/platforms/gf14")
+
+os.chdir(os.path.join(starting_dir, "gf12"))
 run_command_locally("git pull")
-os.chdir(starting_dir)
-os.chdir("OpenROAD-flow/flow/private")
+
+os.chdir(os.path.join(starting_dir, "tsmc65lp"))
 run_command_locally("git pull")
-os.chdir(starting_dir)
-os.chdir("OpenROAD-flow/tools/OpenROAD")
+
+os.chdir(os.path.join(starting_dir, "private_tool_scripts"))
 run_command_locally("git pull")
-run_command_locally("git submodule update --init --recursive")
-os.chdir(starting_dir)
-os.chdir("OpenROAD-flow/tools/yosys")
-run_command_locally("git pull")
-run_command_locally("git submodule update --init --recursive")
-os.chdir(starting_dir)
-os.chdir("OpenROAD-flow/tools/TritonRoute")
-run_command_locally("git pull")
-run_command_locally("git submodule update --init --recursive")
-os.chdir(starting_dir)
-os.chdir("OpenROAD-flow/tools/TritonRoute14")
-run_command_locally("git pull")
-run_command_locally("git submodule update --init --recursive")
-os.chdir(starting_dir)
-os.chdir("OpenROAD-flow")
-run_command_locally("rm -rf tools/build")
+
+os.chdir(os.path.join(starting_dir, "OpenROAD-flow-private"))
+if args.clean:
+    run_command_locally("rm -rf tools/build")
 run_command_locally("./build_openroad.sh --latest --local --nice")
 run_command_locally("bash -c 'source ./setup_env.sh'")
 check_exists("openroad")
 check_exists("yosys")
 check_exists("TritonRoute")
-check_exists("TritonRoute14")
+
