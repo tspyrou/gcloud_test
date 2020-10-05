@@ -20,7 +20,7 @@ def check_exists(pgm):
 
 def run_command_locally(command):
     print("command=",command)
-    subprocess.run(shlex.split(command), stdout=subprocess.PIPE).stdout.decode('utf-8')
+    subprocess.run(shlex.split(command))
 
 starting_dir = os.getcwd()
 print("path to script=",os.path.dirname(os.path.realpath(__file__)))
