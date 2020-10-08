@@ -34,7 +34,7 @@ run_command_locally("git clone git@github.com:The-OpenROAD-Project-private/priva
 
 os.chdir("OpenROAD-flow-private")
 run_command_locally("./build_openroad.sh --latest --local --nice")
-run_command_locally("bash -c 'source ./setup_env.sh'")
+#run_command_locally("bash -c 'source ./setup_env.sh'")
 check_exists("openroad")
 check_exists("yosys")
 check_exists("TritonRoute")
