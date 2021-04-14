@@ -15,7 +15,3 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "This job's status is ${{ job.status }}."
-      - name: Check out security repo with pre commit trigger code
-        uses: actions/checkout@v2
-	with:
-          repository: The-OpenROAD-Project/security
