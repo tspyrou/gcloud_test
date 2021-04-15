@@ -15,8 +15,9 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "This job's status is ${{ job.status }}."
-      - name: Check out security repo with pre commit trigger code
-        uses: actions/checkout@v2
-	with:
-          repository: The-OpenROAD-Project/security
-
+      - uses: actions/checkout@master
+      - name: Checkout tests
+        run: git checkout https://github.com/tspyrou/gcloud_test.git
+      - name: List files in the repository after security clone
+        run: |
+          ls ${{ github.workspace }}
