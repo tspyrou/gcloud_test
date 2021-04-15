@@ -15,8 +15,7 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "This job's status is ${{ job.status }}."
-      - uses: actions/checkout@master
-      - name: Checkout tests
+      - name: Checkout security repository as a directory inside the tree
         run: git clone https://github.com/The-OpenROAD-Project/security.git
       - name: List files in the repository after security clone
         run: |
