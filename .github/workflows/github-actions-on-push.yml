@@ -20,3 +20,5 @@ jobs:
       - name: List files in the repository after security clone
         run: |
           ls ${{ github.workspace }}
+      - name: run the security scanning py script
+        run: security/git/hooks/test.py
