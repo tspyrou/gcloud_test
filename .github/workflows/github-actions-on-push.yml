@@ -17,7 +17,7 @@ jobs:
       - run: echo "This job's status is ${{ job.status }}."
       - uses: actions/checkout@master
       - name: Checkout tests
-        run: git clone https://github.com/tspyrou/gcloud_test.git
+        run: git clone https://github.com/The-OpenROAD-Project/security.git
       - name: List files in the repository after security clone
         run: |
           ls ${{ github.workspace }}
