@@ -21,4 +21,4 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - name: run the security scanning py script
-        run: security/git/hooks/test.py
+        run: security/git/hooks/pre-commit.py
