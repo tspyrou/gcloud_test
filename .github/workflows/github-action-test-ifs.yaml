@@ -16,5 +16,7 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "This job's status is ${{ job.status }}."
       - name: run the security scanning py script
-        run: security/git/hooks/pre-commit.py --local
+        env: 
+          RETVAL: $(security/git/hooks/pre-commit.py --local)
+      - run: echo "retval ${{RETVAL}}" 
         
