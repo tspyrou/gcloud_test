@@ -16,7 +16,7 @@ jobs:
         env:
            GITHUBREPOTOKEN: ${{secrets.GITHUBREPOTOKEN}}
         run: git clone ${{ env.GITHUBREPOTOKEN }}@github.com:The-OpenROAD-Project-private/security.git
-      - name: List files in the repository after security clone
+      - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
       - name: run the security scanning py script
