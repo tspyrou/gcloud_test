@@ -20,7 +20,8 @@ jobs:
       - name: run the security scanning py script
         id: script
         continue-on-error: true
-        run: ../security/git/hooks/pre-commit.py
+#        run: ../security/git/hooks/pre-commit.py
+        run: pwd
       - name: failure
         if: job.steps.script.status == failure()
         run: echo "failed"
