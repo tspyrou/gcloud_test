@@ -24,7 +24,7 @@ jobs:
         run: git status
       - name: failure
         if: ${{job.steps.script.status == failure() }}
-        run: echo "failure ${{job.steps.script.status}}."
+        run: echo "failure ${{job.steps.secscript.status}}."
       - name: passed
         if: ${{job.steps.script.status == success()}}
         run: echo "success ${{job.steps.script.status}}."
