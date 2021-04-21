@@ -21,10 +21,8 @@ jobs:
         id: secscript
         continue-on-error: true
 #        run: ../security/git/hooks/pre-commit.py
-        run: git status
-      - name: failure
-        if: ${{job.steps.script.status == failure() }}
+      - run: git status
+      - if: ${{job.steps.script.status == failure() }}
         run: echo "failure ${{job.steps.secscript.status}}."
-      - name: passed
-        if: ${{job.steps.script.status == success()}}
+      - if: ${{job.steps.script.status == success()}}
         run: echo "success ${{job.steps.script.status}}."
