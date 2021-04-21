@@ -23,7 +23,7 @@ jobs:
 #        run: ../security/git/hooks/pre-commit.py
         run: git status
       - name: failure
-        if: ${{job.steps.script.status == failure()}}
+        if: ${{ failure() }}
         run: echo "failure ${{job.steps.script.status}}."
       - name: passed
         if: ${{job.steps.script.status == success()}}
