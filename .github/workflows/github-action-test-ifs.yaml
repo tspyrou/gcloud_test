@@ -1,6 +1,5 @@
 name: GitHub Actions If
 on: [push, workflow_dispatch]
-
 jobs:
   Github-If:
     runs-on: ubuntu-latest
