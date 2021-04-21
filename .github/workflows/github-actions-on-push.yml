@@ -13,7 +13,7 @@ jobs:
       - run: echo "The workflow is now ready to test your code on the runner."
       - run: echo "This job's status is ${{ job.status }}."
       - name: Checkout security repository code as a directory inside the tree
-        run: git config github.token ${{secrets.GITHUBREPOTOKEN}}; git clone https://github.com/The-OpenROAD-Project-private/security.git
+        run: git config --global github.token ${{secrets.GITHUBREPOTOKEN}}; git clone https://github.com/The-OpenROAD-Project-private/security.git
       - name: List files in the repository after security clone
         run: |
           ls ${{ github.workspace }}
