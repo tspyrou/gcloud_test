@@ -18,8 +18,10 @@ jobs:
       - name: run the security scanning py script
         id: script
         continue-on-error: true
-        run: security/git/hooks/pre-commit.py --local
-      - name: Check on failures
+        run: security/git/hooks/pre-commit.py
+      - name: failure
         if: job.steps.script.status == failure()
         run: echo "failed"
-        
+      - name: passed
+        if: job.steps.script.status == success()
+        run: echo "passed"
