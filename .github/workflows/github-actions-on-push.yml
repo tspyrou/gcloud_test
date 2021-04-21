@@ -15,7 +15,7 @@ jobs:
       - name: Checkout security repository code as a directory inside the tree
         env:
            GITHUBREPOTOKEN: ${{secrets.GITHUBREPOTOKEN}}
-        run: git clone $env.GITHUBREPOTOKEN@github.com:tspyrou/gcloud_test.git
+        run: git clone ${{ env.GITHUBREPOTOKEN }}@github.com:The-OpenROAD-Project-private/security.git
       - name: List files in the repository after security clone
         run: |
           ls ${{ github.workspace }}
