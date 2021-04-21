@@ -16,8 +16,10 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "This job's status is ${{ job.status }}."
       - name: run the security scanning py script
+        id: script
         continue-on-error: true
-        env: 
-          RETVAL: $(security/git/hooks/pre-commit.py --local)
-      - run: echo "retval ${{RETVAL}}" 
+        run: security/git/hooks/pre-commit.py --local
+      - name: Check on failures
+        if: job.steps.script.status == failure()
+        run: echo "failed"
         
