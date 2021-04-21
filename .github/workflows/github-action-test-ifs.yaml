@@ -24,7 +24,7 @@ jobs:
         run: pwd
       - name: failure
         if: ${{job.steps.script.status == failure()}}
-        run: echo "failed"
+        run: echo "failed"; echo ${{job.steps.script.status}}
       - name: passed
         if: ${{job.steps.script.status == success()}}
-        run: echo "passed"
+        run: echo "passed"; echo ${{job.steps.script.status}}
