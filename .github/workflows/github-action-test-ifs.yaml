@@ -17,7 +17,7 @@ jobs:
       - run: echo "This job's status is ${{ job.status }}."
       - name: run the security scanning py script
         env: 
+          continue-on-error: true
           RETVAL: $(security/git/hooks/pre-commit.py --local)
-        continue-on-error: true
       - run: echo "retval ${{RETVAL}}" 
         
