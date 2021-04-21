@@ -21,7 +21,7 @@ jobs:
         id: script
         continue-on-error: true
 #        run: ../security/git/hooks/pre-commit.py
-        run: pwd
+        run: git status
       - name: failure
         if: ${{job.steps.script.status == failure()}}
         run: echo "failure ${{job.steps.script.status}}."
