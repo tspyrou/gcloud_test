@@ -37,7 +37,6 @@ run_command_locally("./build_openroad.sh --latest --local --nice")
 run_command_locally("bash -c 'source ./setup_env.sh'")
 check_exists("openroad")
 check_exists("yosys")
-#check_exists("TritonRoute")
 #===============================================================================
 
 
