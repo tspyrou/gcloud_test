@@ -28,9 +28,9 @@ print("starting_dir =",starting_dir)
 
 run_command_locally("git clone --recursive git@github.com:The-OpenROAD-Project-private/OpenROAD-flow-scripts.git")
 
-run_command_locally("git clone /home/zf4_projects/OpenROAD-guest/platforms/gf12.git")
-run_command_locally("git clone /home/zf4_projects/OpenROAD-guest/platforms/tsmc65lp.git")
-run_command_locally("git clone git@github.com:The-OpenROAD-Project-private/private_tool_scripts.git")
+#run_command_locally("git clone /home/zf4_projects/OpenROAD-guest/platforms/gf12.git")
+#run_command_locally("git clone /home/zf4_projects/OpenROAD-guest/platforms/tsmc65lp.git")
+#run_command_locally("git clone git@github.com:The-OpenROAD-Project-private/private_tool_scripts.git")
 
 os.chdir("OpenROAD-flow-scripts")
 run_command_locally("./build_openroad.sh --latest --local --nice")
