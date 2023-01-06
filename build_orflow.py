@@ -26,7 +26,7 @@ starting_dir = os.getcwd()
 print("path to script=",os.path.dirname(os.path.realpath(__file__)))
 print("starting_dir =",starting_dir)
 
-run_command_locally("git clone --recursive git@github.com:The-OpenROAD-Project-private/OpenROAD-flow-scripts.git")
+run_command_locally("git clone --recursive git@github.com:The-OpenROAD-Project/OpenROAD-flow-scripts.git")
 
 #run_command_locally("git clone /home/zf4_projects/OpenROAD-guest/platforms/gf12.git")
 #run_command_locally("git clone /home/zf4_projects/OpenROAD-guest/platforms/tsmc65lp.git")
